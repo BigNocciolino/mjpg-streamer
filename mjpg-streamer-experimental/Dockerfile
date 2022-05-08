@@ -1,6 +1,6 @@
 FROM chunliu/docker-opencv
 
-MAINTAINER Chun Liu <https://github.com/chunliu>
+LABEL Maintainer="Alfonso Sorrentino"
 LABEL Description="A Docker image for mjpg_streamer." Version="0.3"
 
 # Build mjpg_streamer
