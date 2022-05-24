@@ -1,5 +1,7 @@
 #!/bin/sh
 set -e
 
-export LD_LIBRARY_PATH="/mjpg-streamer/"
-./mjpg_streamer -o "$1" -i "$2"
+# Set the library path for the loader
+export LD_LIBRARY_PATH="/mjpg-streamer/plugins/"
+# Start the streamer with external parameters
+./mjpg_streamer -i "$1" -o "$2"

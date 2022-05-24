@@ -3,6 +3,9 @@ FROM ubuntu:latest
 LABEL Maintainer="Alfonso Sorrentino"
 LABEL Description="A Docker image for mjpg_streamer." Version="0.3"
 
+ENV INPUT_PLUGIN="input_uvc.so"
+ENV OUTPUT_PLUGIN="output_http.so -w ./www --port 8080"
+
 RUN apt-get -y update
 RUN apt-get -y install git make cmake libjpeg-dev
 
@@ -19,8 +22,13 @@ RUN apt-get -y install git make cmake libjpeg-dev
 COPY . /mjpg-streamer/
 WORKDIR /mjpg-streamer/
 
-EXPOSE 8082/TCP
+RUN make \
+    && make install \
+    && chmod +x docker-start.sh
 
-ENTRYPOINT ["/mjpg-streamer/docker-start.sh", "output_http.so -w ./www --port 8082"]
+EXPOSE 8080/TCP
 
-CMD ["input_uvc.so"]
+# ENTRYPOINT ["/mjpg-streamer/docker-start.sh", "input_uvc.so"]
+
+# FIXME setting the parameter on run take as second argument the first space 
+CMD /mjpg-streamer/docker-start.sh "${INPUT_PLUGIN}" "${OUTPUT_PLUGIN}"
